@@ -6,10 +6,10 @@ Provision infrastructure for my-awesome-resume project.
 For provisioning infrastructure with backend included follow the  next steps:
 
     terraform init -backend=false
-    terraform plan -out=backend.plan -target=module.backend -var 'backend_bucket_name=tf-backend-aws-example'
+    terraform plan -out=backend.plan -target=module.backend -var 'backend_bucket_name=tf-backend-my-awesome-iac'
     terraform apply backend.plan
-    mv backend.tf.sample backend.tf
-    terraform init -reconfigure -backend-config=conf.tfvars
+    cp backend.conf.sample backend.conf
+    terraform init -reconfigure -backend-config=backend.conf
     # Now 'show' should show your terraform backend resource attributes
     terraform show
 
