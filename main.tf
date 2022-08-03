@@ -11,7 +11,7 @@ terraform {
 }
 
 provider "aws" {
-  region  = var.region
+  region = var.region
 }
 
 module "backend" {
@@ -19,6 +19,20 @@ module "backend" {
   backend_bucket = var.backend_bucket_name
 }
 
+module "static_website" {
+  source      = "./s3-static-website-bucket"
+  bucket_name = var.domain
+}
+
 module "dns" {
   source = "./dns"
+  domain = var.domain
+}
+
+module "cdn" {
+  source             = "./cloudfront"
+  domain             = var.domain
+  hosted_zone_id     = module.dns.aws_route53_zone_id
+  bucket             = module.static_website.name
+  bucket_domain_name = module.static_website.bucket_domain_name
 }
