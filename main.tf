@@ -20,17 +20,17 @@ module "backend" {
 }
 
 module "static_website" {
-  source      = "./s3-static-website-bucket"
+  source      = "./modules/s3-static-website-bucket"
   bucket_name = var.domain
 }
 
 module "dns" {
-  source = "./dns"
+  source = "./modules/dns"
   domain = var.domain
 }
 
 module "cdn" {
-  source             = "./cloudfront"
+  source             = "./modules/cloudfront"
   domain             = var.domain
   hosted_zone_id     = module.dns.aws_route53_zone_id
   bucket             = module.static_website.name
